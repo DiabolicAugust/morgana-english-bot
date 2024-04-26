@@ -134,7 +134,7 @@ export class PostService {
     try {
       const fact = await this.factService.getOne();
       console.log(fact);
-      const message = `🌌🌿 **Did You Know?** 🌿🌌\n\n🌠 ${escapeMarkdownV2(fact.fact)}🌿🌀\n\n 🚀 ${escapeMarkdownV2(fact.translation)} 🌍 \n\n🪐 Explore this fascinating fact in our cosmic garden of knowledge\\. 🌍✨\n\n🔭 \\#FactSpace`;
+      const message = `🌌🌿 Did You Know? 🌿🌌\n\n🌠 *${escapeMarkdownV2(fact.fact)}*🌿🌀\n\n 🚀 ${escapeMarkdownV2(fact.translation)} 🌍 \n\n🪐 Explore this fascinating fact in our cosmic garden of knowledge\\. 🌍✨\n\n🔭 \\#FactSpace`;
 
       const photoPath = './src/assets/FactSpace.png';
 
