@@ -22,10 +22,48 @@ export class PostService {
     private readonly factService: FactService,
   ) {}
 
-  //   @Cron('0 15,17 * * *', {
-  //     timeZone: 'Europe/Kyiv',
-  //   })
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron('0 9 * * *', {
+    timeZone: 'Europe/Kyiv',
+  })
+  //   @Cron(CronExpression.EVERY_30_SECONDS)
+  async handleTopicSet() {
+    console.log('start');
+    const channelId = process.env.TELEGRAM_CHANNEL_ID;
+    try {
+      const topicSet = await this.topicSetService.getOne();
+      console.log(topicSet);
+      const photoPath = './src/assets/AstroMaticWords.png';
+      const message =
+        `*🌌 Тема:  ${escapeMarkdownV2(topicSet.topic)}*\n\n` +
+        `\n✨_Приклад речення: _ "${escapeMarkdownV2(topicSet.sentence)}"\n\n` +
+        `||${escapeMarkdownV2(topicSet.sentenceTranslation)}||\n\n` +
+        `🚀 Слова та їх переклади:\n\n` +
+        topicSet.words
+          .map(
+            (word) =>
+              `🪐 *${escapeMarkdownV2(word.word)}* 🛸 ${escapeMarkdownV2(word.translation)}\n\n`,
+          )
+          .join('') +
+        `\\#AstroMaticWords`;
+
+      await this.bot.telegram.sendPhoto(
+        channelId,
+        { source: photoPath },
+        {
+          caption: message,
+          parse_mode: 'MarkdownV2',
+        },
+      );
+      console.log('Message sent successfully.');
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
+  }
+
+  @Cron('0 12,15 * * *', {
+    timeZone: 'Europe/Kyiv',
+  })
+  //   @Cron(CronExpression.EVERY_30_SECONDS)
   async sentenceHandle() {
     const channelId = process.env.TELEGRAM_CHANNEL_ID;
     try {
@@ -86,56 +124,17 @@ export class PostService {
   //     }
   //   }
 
-  //   @Cron('0 12 * * *', {
-  //     timeZone: 'Europe/Kyiv',
-  //   })
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  async handleTopicSet() {
-    console.log('start');
-    const channelId = process.env.TELEGRAM_CHANNEL_ID;
-    try {
-      const topicSet = await this.topicSetService.getOne();
-      console.log(topicSet);
-      const photoPath = './src/assets/AstroMaticWords.png';
-      const message =
-        `*🌌 Тема:  ${escapeMarkdownV2(topicSet.topic)}*\n\n` +
-        `\n✨_Приклад речення: _ "${escapeMarkdownV2(topicSet.sentence)}"\n\n` +
-        `||${escapeMarkdownV2(topicSet.sentenceTranslation)}||\n\n` +
-        `🚀 Слова та їх переклади:\n\n` +
-        topicSet.words
-          .map(
-            (word) =>
-              `🪐 *${escapeMarkdownV2(word.word)}* 🛸 ${escapeMarkdownV2(word.translation)}\n\n`,
-          )
-          .join('') +
-        `\\#AstroMaticWords`;
-
-      await this.bot.telegram.sendPhoto(
-        channelId,
-        { source: photoPath },
-        {
-          caption: message,
-          parse_mode: 'MarkdownV2',
-        },
-      );
-      console.log('Message sent successfully.');
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
-  }
-
-  //   @Cron('0 19 * * *', {
-  //     timeZone: 'Europe/Kyiv',
-  //   })
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron('0 18 * * *', {
+    timeZone: 'Europe/Kyiv',
+  })
+  //   @Cron(CronExpression.EVERY_30_SECONDS)
   async handleFact() {
     console.log('start');
     const channelId = process.env.TELEGRAM_CHANNEL_ID;
     try {
       const fact = await this.factService.getOne();
       console.log(fact);
-      const message =
-        `${fact.fact}\n` + `\n  ${fact.translation}\n\n` + `#FactSpace`;
+      const message = `🌌🌿 **Did You Know?** 🌿🌌\n\n🌠 ${escapeMarkdownV2(fact.fact)}🌿🌀\n\n 🚀 ${escapeMarkdownV2(fact.translation)} 🌍 \n\n🪐 Explore this fascinating fact in our cosmic garden of knowledge\\. 🌍✨\n\n🔭 \\#FactSpace`;
 
       const photoPath = './src/assets/FactSpace.png';
 
@@ -144,7 +143,7 @@ export class PostService {
         { source: photoPath },
         {
           caption: message,
-          parse_mode: 'HTML',
+          parse_mode: 'MarkdownV2',
         },
       );
       console.log('Message sent successfully.');
