@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BotModule } from './bot/bot.module';
 import { PostModule } from './post/post.module.js';
+import { ContentStatsModule } from './statistics/content-stats/content-stats.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PostModule } from './post/post.module.js';
     ScheduleModule.forRoot(),
     BotModule,
     PostModule,
+    ContentStatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
