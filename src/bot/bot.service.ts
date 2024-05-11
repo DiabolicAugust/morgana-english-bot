@@ -103,8 +103,8 @@ export class BotService {
       await ctx.replyWithPhoto(this.currentPhotoUrl, {
         caption: this.currentText,
         reply_markup: Markup.inlineKeyboard([
-          Markup.button.url('Приєднатися✅', this.channelUrl),
-          Markup.button.url('Учасники(87/100)', this.channelUrl),
+          [Markup.button.url('Приєднатися✅', this.channelUrl)],
+          [Markup.button.url('Учасники(87/100)', this.channelUrl)],
         ]).reply_markup,
         caption_entities: this.urlEntities,
       });
